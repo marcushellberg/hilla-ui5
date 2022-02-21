@@ -3,30 +3,24 @@ import '@vaadin/notification';
 import { Notification } from '@vaadin/notification';
 import '@vaadin/text-field';
 import { html } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { View } from '../../views/view';
+import '@ui5/webcomponents/dist/DatePicker.js';
 
 @customElement('hello-world-view')
 export class HelloWorldView extends View {
-  name = '';
+  @state()
+  date = '';
 
   connectedCallback() {
     super.connectedCallback();
-    this.classList.add('flex', 'p-m', 'gap-m', 'items-end');
+    this.classList.add('flex', 'flex-col', 'p-m', 'gap-m', 'items-start');
   }
 
   render() {
     return html`
-      <vaadin-text-field label="Your name" @value-changed=${this.nameChanged}></vaadin-text-field>
-      <vaadin-button @click=${this.sayHello}>Say hello</vaadin-button>
+      <ui5-date-picker @change=${(e: any) => (this.date = e.detail.value)}></ui5-date-picker>
+      <span>Selected date: ${this.date}</span>
     `;
-  }
-
-  nameChanged(e: CustomEvent) {
-    this.name = e.detail.value;
-  }
-
-  sayHello() {
-    Notification.show(`Hello ${this.name}`);
   }
 }
